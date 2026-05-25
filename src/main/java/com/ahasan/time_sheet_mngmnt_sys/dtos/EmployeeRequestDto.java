@@ -14,6 +14,8 @@ public class EmployeeRequestDto {
     @NotBlank(message = "Last Name is required")
     private String lastName;
 
+    private String role;
+
     @Email(message = "Invalid Email")
     private String email;
 

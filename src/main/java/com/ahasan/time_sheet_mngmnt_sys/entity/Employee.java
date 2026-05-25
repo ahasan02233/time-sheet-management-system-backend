@@ -27,7 +27,12 @@ public class Employee {
 
     private String password;
 
+    @Column(nullable = false)
     private String role;
 
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 }

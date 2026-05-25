@@ -1,14 +1,13 @@
 package com.ahasan.time_sheet_mngmnt_sys.controller;
 
 import com.ahasan.time_sheet_mngmnt_sys.EmployeeService.EmployeeService;
-import com.ahasan.time_sheet_mngmnt_sys.dtos.EmployeeRequestDto;
-import com.ahasan.time_sheet_mngmnt_sys.dtos.EmployeeResponseDto;
-import com.ahasan.time_sheet_mngmnt_sys.dtos.LoginRequestDto;
-import com.ahasan.time_sheet_mngmnt_sys.dtos.LoginResponseDto;
+import com.ahasan.time_sheet_mngmnt_sys.dtos.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -38,5 +37,30 @@ public class EmployeeController {
                 employeeService.loginEmployee(request);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/timesheet/create")
+    public ResponseEntity<TimesheetResponseDto> createTimesheet(
+            @RequestBody TimesheetRequestDto requestDto
+    ) {
+
+        return ResponseEntity.ok(
+                employeeService.createTimesheet(
+                        requestDto,
+                        requestDto.getEmail()
+                )
+        );
+    }
+
+    @GetMapping("/timesheet/my")
+    public ResponseEntity<List<TimesheetResponseDto>>
+    getMyTimesheets(
+
+            @RequestParam String email
+    ) {
+
+        return ResponseEntity.ok(
+                employeeService.getMyTimesheets(email)
+        );
     }
 }

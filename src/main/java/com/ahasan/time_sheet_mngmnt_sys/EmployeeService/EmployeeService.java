@@ -6,13 +6,21 @@ import com.ahasan.time_sheet_mngmnt_sys.dtos.EmployeeResponseDto;
 import com.ahasan.time_sheet_mngmnt_sys.dtos.LoginRequestDto;
 import com.ahasan.time_sheet_mngmnt_sys.dtos.LoginResponseDto;
 
+
+import com.ahasan.time_sheet_mngmnt_sys.dtos.*;
+
+import java.util.List;
+
 public interface EmployeeService {
 
     EmployeeResponseDto registerEmployee(EmployeeRequestDto requestDto);
 
-    //LoginResponseDto login(LoginRequestDto request);
+    LoginResponseDto loginEmployee(LoginRequestDto requestDto);
 
-    LoginResponseDto loginEmployee(
-            LoginRequestDto requestDto
+    TimesheetResponseDto createTimesheet(
+            TimesheetRequestDto requestDto,
+            String employeeEmail
     );
+
+    List<TimesheetResponseDto> getMyTimesheets(String employeeEmail);
 }
