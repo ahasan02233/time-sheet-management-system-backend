@@ -1,6 +1,7 @@
 package com.ahasan.time_sheet_mngmnt_sys.dtos;
 
 
+import com.ahasan.time_sheet_mngmnt_sys.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -14,7 +15,7 @@ public class EmployeeRequestDto {
     @NotBlank(message = "Last Name is required")
     private String lastName;
 
-    private String role;
+    private Role role;
 
     @Email(message = "Invalid Email")
     private String email;

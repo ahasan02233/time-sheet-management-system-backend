@@ -1,5 +1,6 @@
 package com.ahasan.time_sheet_mngmnt_sys.entity;
 
+import com.ahasan.time_sheet_mngmnt_sys.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,12 +28,9 @@ public class Employee {
 
     private String password;
 
-    @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     private LocalDateTime createdAt;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
 }

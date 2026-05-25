@@ -84,7 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .role(savedEmployee.getRole())
 
                 .message(
-                        "Employee Registered Successfully"
+                        "Registered Successfully"
                 )
 
                 .build();

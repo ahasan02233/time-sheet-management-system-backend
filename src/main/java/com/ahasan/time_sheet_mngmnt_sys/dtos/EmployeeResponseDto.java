@@ -1,5 +1,6 @@
 package com.ahasan.time_sheet_mngmnt_sys.dtos;
 
+import com.ahasan.time_sheet_mngmnt_sys.enums.Role;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,7 +16,7 @@ public class EmployeeResponseDto {
 
     private String email;
 
-    private String role;
+    private Role role;
 
     private String message;
 }

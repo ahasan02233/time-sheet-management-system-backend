@@ -40,7 +40,7 @@ public class CustomUserDetailsService
 
                 List.of(
                         new SimpleGrantedAuthority(
-                                employee.getRole()
+                                employee.getRole().name()
                         )
                 )
         );
