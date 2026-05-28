@@ -1,20 +1,18 @@
-package com.ahasan.time_sheet_mngmnt_sys.config;
+package com.ahasan.time_sheet_mngmnt_sys.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class AppConfig {
+@EnableMethodSecurity
+public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -40,27 +38,34 @@ public class AppConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        // EMPLOYEE APIs
+                        // PUBLIC APIs
                         .requestMatchers(
                                 "/api/employees/register",
                                 "/api/employees/login",
-                                "/api/employees/timesheet/**"
+                                "/api/employees/timesheet/create"
                         ).permitAll()
 
-                        // MANAGER APIs
+                        // SWAGGER APIs
                         .requestMatchers(
-                                "/manager/**"
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
                         ).permitAll()
+
+                        // MANAGER / ADMIN APIs
+                        .requestMatchers(
+                                "/api/employees/timesheet/pending",
+                                "/api/employees/timesheet/approve/**",
+                                "/api/employees/timesheet/reject/**"
+                        )
+                        .hasAnyRole("MANAGER", "ADMIN")
 
                         // ALL OTHER APIs
                         .anyRequest()
-                        .permitAll()
+                        .authenticated()
                 )
 
-                // DISABLE BASIC AUTH
                 .httpBasic(httpBasic -> httpBasic.disable())
 
-                // DISABLE FORM LOGIN
                 .formLogin(form -> form.disable());
 
         return http.build();
