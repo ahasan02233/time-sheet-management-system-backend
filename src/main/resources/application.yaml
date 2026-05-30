@@ -21,6 +21,9 @@ springdoc:
     enabled: true
   swagger-ui:
     enabled: true
+jwt:
+  secret: MySecretKeyForTimeSheetManagementSystem2026MySecretKey
+  expiration: 86400000
 
 app:
   server:

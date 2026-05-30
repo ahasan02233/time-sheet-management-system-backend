@@ -6,6 +6,8 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.servers.Server;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,21 +32,20 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
 
-        Server localServer = new Server();
-        localServer.setUrl(localUrl);
-        localServer.setDescription("Local Environment");
+        Server localServer = new Server().url(localUrl).description("Local Environment");
+        Server devServer = new Server().url(devUrl).description("Development Environment");
+        Server qaServer = new Server().url(qaUrl).description("QA Environment");
+        Server prodServer = new Server().url(prodUrl).description("Production Environment");
 
-        Server devServer = new Server();
-        devServer.setUrl(devUrl);
-        devServer.setDescription("Development Environment");
+        // ✅ Define JWT Security Scheme
+        SecurityScheme bearerAuth = new SecurityScheme()
+                .name("bearerAuth")
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT");
 
-        Server qaServer = new Server();
-        qaServer.setUrl(qaUrl);
-        qaServer.setDescription("QA Environment");
-
-        Server prodServer = new Server();
-        prodServer.setUrl(prodUrl);
-        prodServer.setDescription("Production Environment");
+        // ✅ Apply security requirement globally
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
 
         return new OpenAPI()
                 .info(
@@ -52,27 +53,12 @@ public class SwaggerConfig {
                                 .title("Time Sheet Management System APIs")
                                 .description("Employee and Manager REST APIs Documentation")
                                 .version("1.0.0")
-                                .contact(
-                                        new Contact()
-                                                .name("Ibala Hasan")
-                                                .email("admin@test.com")
-                                )
-                                .license(
-                                        new License()
-                                                .name("Apache 2.0")
-                                )
+                                .contact(new Contact().name("Ibala Hasan").email("admin@test.com"))
+                                .license(new License().name("Apache 2.0"))
                 )
-                .servers(
-                        List.of(
-                                localServer,
-                                devServer,
-                                qaServer,
-                                prodServer
-                        )
-                )
-                .externalDocs(
-                        new ExternalDocumentation()
-                                .description("Project Documentation")
-                );
+                .servers(List.of(localServer, devServer, qaServer, prodServer))
+                .externalDocs(new ExternalDocumentation().description("Project Documentation"))
+                .addSecurityItem(securityRequirement)   // ✅ add security globally
+                .schemaRequirement("bearerAuth", bearerAuth); // ✅ register scheme
     }
 }

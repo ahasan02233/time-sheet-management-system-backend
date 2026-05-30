@@ -76,7 +76,7 @@ public class ManagerServiceImpl implements ManagerService {
         dto.setHoursWorked(timesheet.getHoursWorked());
         dto.setWorkDate(timesheet.getWorkDate());
         dto.setStatus(timesheet.getStatus());
-        dto.setManagerComment(timesheet.getManagerComment());
+        //dto.setManagerComment(timesheet.getManagerComment());
 
         return dto;
     }

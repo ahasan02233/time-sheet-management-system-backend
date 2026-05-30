@@ -14,35 +14,23 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailsService
-        implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private final EmployeeRepository employeeRepository;
 
     @Override
-    public UserDetails loadUserByUsername(
-            String email
-    ) throws UsernameNotFoundException {
-
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Employee employee = employeeRepository
                 .findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-                .orElseThrow(() ->
-                        new UsernameNotFoundException(
-                                "User not found"
-                        ));
+        // ✅ Prefix role with "ROLE_" so Spring Security matches @PreAuthorize checks
+        String roleName = "ROLE_" + employee.getRole().name();
 
         return new User(
-
                 employee.getEmail(),
-
                 employee.getPassword(),
-
-                List.of(
-                        new SimpleGrantedAuthority(
-                                employee.getRole().name()
-                        )
-                )
+                List.of(new SimpleGrantedAuthority(roleName))
         );
     }
 }

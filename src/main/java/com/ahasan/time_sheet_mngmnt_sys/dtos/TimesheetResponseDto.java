@@ -17,7 +17,7 @@ public class TimesheetResponseDto {
 
     private String status;
 
-    private String managerComment;
+    //private String managerComment;
 
     public Long getId() {
         return id;
@@ -67,11 +67,11 @@ public class TimesheetResponseDto {
         this.status = status;
     }
 
-    public String getManagerComment() {
+    /*public String getManagerComment() {
         return managerComment;
     }
 
     public void setManagerComment(String managerComment) {
         this.managerComment = managerComment;
-    }
+    }*/
 }
