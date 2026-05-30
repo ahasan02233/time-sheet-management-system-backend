@@ -23,38 +23,71 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config
+    ) throws Exception {
+
         return config.getAuthenticationManager();
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception {
+
         http
+
+                .cors(cors -> {})
+
                 .csrf(csrf -> csrf.disable())
+
                 .authorizeHttpRequests(auth -> auth
+
+                        // PUBLIC APIs
                         .requestMatchers(
                                 "/api/employees/register",
                                 "/api/employees/login",
                                 "/api/employees/timesheet/create"
                         ).permitAll()
+
+                        // SWAGGER
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
+
+                        // MANAGER APIs
                         .requestMatchers(
-                                "/api/employees/timesheet/pending",
-                                "/api/employees/timesheet/approve/**",
-                                "/api/employees/timesheet/reject/**"
-                        ).hasAnyRole("MANAGER", "ADMIN")
-                        .anyRequest().authenticated()
+                                "/manager/pending",
+                                "/manager/approve/**",
+                                "/manager/reject/**"
+                        )
+                        .hasAnyRole("MANAGER", "ADMIN")
+
+                        // EMPLOYEE APIs
+                        .requestMatchers(
+                                "/api/employees/timesheet/my"
+                        )
+                        .authenticated()
+
+                        // ALL OTHER APIS
+                        .anyRequest()
+                        .authenticated()
                 )
+
                 .httpBasic(httpBasic -> httpBasic.disable())
+
                 .formLogin(form -> form.disable())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+                .addFilterBefore(
+                        jwtAuthFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }
