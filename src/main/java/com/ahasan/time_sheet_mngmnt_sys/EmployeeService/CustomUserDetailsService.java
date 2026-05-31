@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // ✅ Prefix role with "ROLE_" so Spring Security matches @PreAuthorize checks
+        //Prefix role with "ROLE_" so Spring Security matches @PreAuthorize checks
         String roleName = "ROLE_" + employee.getRole().name();
 
         return new User(

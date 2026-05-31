@@ -61,7 +61,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new RuntimeException("Invalid Password");
         }
 
-        // ✅ Generate JWT token
         String token = jwtUtil.generateToken(employee.getEmail());
 
         LoginResponseDto response = new LoginResponseDto();
@@ -111,7 +110,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         dto.setHoursWorked(timesheet.getHoursWorked());
         dto.setWorkDate(timesheet.getWorkDate());
         dto.setStatus(timesheet.getStatus());
-        //dto.setManagerComment(timesheet.getManagerComment());
+        dto.setManagerComment(timesheet.getManagerComment());
         return dto;
     }
 }

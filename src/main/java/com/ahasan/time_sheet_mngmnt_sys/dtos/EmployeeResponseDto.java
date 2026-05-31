@@ -8,7 +8,7 @@ public class EmployeeResponseDto {
     private String firstName;
     private String lastName;
     private String email;
-    private Role role;   // ✅ use enum type here
+    private Role role;   //use enum type here
     private String message;
 
     public EmployeeResponseDto() {}

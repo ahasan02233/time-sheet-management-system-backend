@@ -12,14 +12,14 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // 🔑 Must be at least 256 bits (32+ chars)
+    //Must be at least 256 bits (32+ chars)
     private final String SECRET = "my-super-secret-key-which-is-at-least-32-chars-long";
     private final long EXPIRATION = 1000 * 60 * 60; // 1 hour
 
-    // ✅ Declare as SecretKey directly
+    //Declare as SecretKey directly
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
-    // Generate token
+    //Generate token
     public String generateToken(String username) {
         return Jwts.builder()
                 .subject(username)   // new style in 0.12.x
@@ -29,12 +29,12 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Extract username
+    //Extract username
     public String extractUsername(String token) {
         return parseClaims(token).getSubject();
     }
 
-    // Validate token
+    //Validate token
     public boolean validateToken(String token, String username) {
         return username.equals(extractUsername(token)) && !isTokenExpired(token);
     }
@@ -44,7 +44,7 @@ public class JwtUtil {
         return expiration.before(new Date());
     }
 
-    // ✅ Parsing in 0.12.x
+    //Parsing in 0.12.x
     private Claims parseClaims(String token) {
         return Jwts.parser()
                 .verifyWith(key)   // key is SecretKey, no cast needed

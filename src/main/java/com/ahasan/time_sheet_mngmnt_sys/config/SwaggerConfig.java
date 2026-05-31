@@ -37,14 +37,14 @@ public class SwaggerConfig {
         Server qaServer = new Server().url(qaUrl).description("QA Environment");
         Server prodServer = new Server().url(prodUrl).description("Production Environment");
 
-        // ✅ Define JWT Security Scheme
+        //Define JWT Security Scheme
         SecurityScheme bearerAuth = new SecurityScheme()
                 .name("bearerAuth")
                 .type(SecurityScheme.Type.HTTP)
                 .scheme("bearer")
                 .bearerFormat("JWT");
 
-        // ✅ Apply security requirement globally
+        //Apply security requirement globally
         SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
 
         return new OpenAPI()
@@ -58,7 +58,7 @@ public class SwaggerConfig {
                 )
                 .servers(List.of(localServer, devServer, qaServer, prodServer))
                 .externalDocs(new ExternalDocumentation().description("Project Documentation"))
-                .addSecurityItem(securityRequirement)   // ✅ add security globally
-                .schemaRequirement("bearerAuth", bearerAuth); // ✅ register scheme
+                .addSecurityItem(securityRequirement)   //add security globally
+                .schemaRequirement("bearerAuth", bearerAuth); //register scheme
     }
 }
