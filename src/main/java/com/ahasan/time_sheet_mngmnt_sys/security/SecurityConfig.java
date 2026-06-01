@@ -42,26 +42,36 @@ public class SecurityConfig {
 
         http
 
-                .cors(cors -> {})
+                .cors(cors -> {
+                })
 
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
 
+                        // =========================
                         // PUBLIC APIs
+                        // =========================
                         .requestMatchers(
                                 "/api/employees/register",
                                 "/api/employees/login",
                                 "/api/employees/timesheet/create"
                         ).permitAll()
 
-                        // SWAGGER
+                        // =========================
+                        // SWAGGER APIs
+                        // =========================
                         .requestMatchers(
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs",
+                                "/webjars/**"
                         ).permitAll()
 
-                        // MANAGER APIs
+                        // =========================
+                        // MANAGER TIMESHEET APIs
+                        // =========================
                         .requestMatchers(
                                 "/manager/pending",
                                 "/manager/approve/**",
@@ -69,13 +79,36 @@ public class SecurityConfig {
                         )
                         .hasAnyRole("MANAGER", "ADMIN")
 
-                        // EMPLOYEE APIs
+                        // =========================
+                        // MANAGER LEAVE APIs
+                        // =========================
+                        .requestMatchers(
+                                "/manager/leave/pending",
+                                "/manager/leave/*/approve",
+                                "/manager/leave/*/reject"
+                        )
+                        .hasAnyRole("MANAGER", "ADMIN")
+
+                        // =========================
+                        // EMPLOYEE TIMESHEET APIs
+                        // =========================
                         .requestMatchers(
                                 "/api/employees/timesheet/my"
                         )
                         .authenticated()
 
-                        // ALL OTHER APIS
+                        // =========================
+                        // EMPLOYEE LEAVE APIs
+                        // =========================
+                        .requestMatchers(
+                                "/api/employees/leave/apply",
+                                "/api/employees/leave/my"
+                        )
+                        .authenticated()
+
+                        // =========================
+                        // ALL OTHER APIs
+                        // =========================
                         .anyRequest()
                         .authenticated()
                 )

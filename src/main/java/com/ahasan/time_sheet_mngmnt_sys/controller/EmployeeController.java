@@ -23,31 +23,27 @@ public class EmployeeController {
     @Operation(summary = "Register Employee")
     @PostMapping("/register")
     public ResponseEntity<EmployeeResponseDto> registerEmployee(
-            @Valid @RequestBody EmployeeRequestDto requestDto
-    ) {
+            @Valid @RequestBody EmployeeRequestDto requestDto) {
 
-        EmployeeResponseDto response =
-                employeeService.registerEmployee(requestDto);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                employeeService.registerEmployee(requestDto)
+        );
     }
 
     @Operation(summary = "Employee Login")
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(
-            @RequestBody LoginRequestDto request
-    ) {
+            @RequestBody LoginRequestDto request) {
 
-        LoginResponseDto response =
-                employeeService.loginEmployee(request);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                employeeService.loginEmployee(request)
+        );
     }
+
     @Operation(summary = "Create Timesheet")
     @PostMapping("/timesheet/create")
     public ResponseEntity<TimesheetResponseDto> createTimesheet(
-            @RequestBody TimesheetRequestDto requestDto
-    ) {
+            @RequestBody TimesheetRequestDto requestDto) {
 
         return ResponseEntity.ok(
                 employeeService.createTimesheet(
@@ -59,14 +55,35 @@ public class EmployeeController {
 
     @Operation(summary = "Get My Timesheets")
     @GetMapping("/timesheet/my")
-    public ResponseEntity<List<TimesheetResponseDto>>
-    getMyTimesheets(
-
-            @RequestParam String email
-    ) {
+    public ResponseEntity<List<TimesheetResponseDto>> getMyTimesheets(
+            @RequestParam String email) {
 
         return ResponseEntity.ok(
                 employeeService.getMyTimesheets(email)
+        );
+    }
+
+    // ==========================
+    // LEAVE MANAGEMENT
+    // ==========================
+
+    @Operation(summary = "Apply Leave")
+    @PostMapping("/leave/apply")
+    public ResponseEntity<LeaveResponseDto> applyLeave(
+            @RequestBody LeaveRequestDto requestDto) {
+
+        return ResponseEntity.ok(
+                employeeService.applyLeave(requestDto)
+        );
+    }
+
+    @Operation(summary = "Get My Leaves")
+    @GetMapping("/leave/my")
+    public ResponseEntity<List<LeaveResponseDto>> getMyLeaves(
+            @RequestParam String email) {
+
+        return ResponseEntity.ok(
+                employeeService.getMyLeaves(email)
         );
     }
 }

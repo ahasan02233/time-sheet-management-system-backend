@@ -1,10 +1,8 @@
 package com.ahasan.time_sheet_mngmnt_sys.EmployeeService;
 
+import com.ahasan.time_sheet_mngmnt_sys.dtos.LeaveResponseDto;
 import com.ahasan.time_sheet_mngmnt_sys.dtos.ManagerActionDto;
 import com.ahasan.time_sheet_mngmnt_sys.dtos.TimesheetResponseDto;
-import com.ahasan.time_sheet_mngmnt_sys.entity.Timesheet;
-
-import java.util.List;
 
 import java.util.List;
 
@@ -20,5 +18,17 @@ public interface ManagerService {
     TimesheetResponseDto rejectTimesheet(
             Long timesheetId,
             ManagerActionDto dto
+    );
+
+    List<LeaveResponseDto> getPendingLeaves();
+
+    LeaveResponseDto approveLeave(
+            Long leaveId,
+            String comment
+    );
+
+    LeaveResponseDto rejectLeave(
+            Long leaveId,
+            String comment
     );
 }

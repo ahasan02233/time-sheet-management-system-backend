@@ -5,9 +5,9 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,35 +30,68 @@ public class SwaggerConfig {
     private String prodUrl;
 
     @Bean
-    public OpenAPI openAPI() {
+    public OpenAPI customOpenAPI() {
 
-        Server localServer = new Server().url(localUrl).description("Local Environment");
-        Server devServer = new Server().url(devUrl).description("Development Environment");
-        Server qaServer = new Server().url(qaUrl).description("QA Environment");
-        Server prodServer = new Server().url(prodUrl).description("Production Environment");
-
-        //Define JWT Security Scheme
-        SecurityScheme bearerAuth = new SecurityScheme()
-                .name("bearerAuth")
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("bearer")
-                .bearerFormat("JWT");
-
-        //Apply security requirement globally
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
+        final String securitySchemeName = "bearerAuth";
 
         return new OpenAPI()
+
                 .info(
                         new Info()
-                                .title("Time Sheet Management System APIs")
-                                .description("Employee and Manager REST APIs Documentation")
-                                .version("1.0.0")
-                                .contact(new Contact().name("Ibala Hasan").email("admin@test.com"))
-                                .license(new License().name("Apache 2.0"))
+                                .title("Time Sheet Management System API")
+                                .version("1.0")
+                                .description(
+                                        "Employee, Manager, Timesheet and Leave Management APIs"
+                                )
+                                .contact(
+                                        new Contact()
+                                                .name("Ibala Hasan")
+                                                .email("admin@test.com")
+                                )
+                                .license(
+                                        new License()
+                                                .name("Apache 2.0")
+                                )
                 )
-                .servers(List.of(localServer, devServer, qaServer, prodServer))
-                .externalDocs(new ExternalDocumentation().description("Project Documentation"))
-                .addSecurityItem(securityRequirement)   //add security globally
-                .schemaRequirement("bearerAuth", bearerAuth); //register scheme
+
+                .servers(
+                        List.of(
+                                new Server()
+                                        .url(localUrl)
+                                        .description("Local Environment"),
+
+                                new Server()
+                                        .url(devUrl)
+                                        .description("Development Environment"),
+
+                                new Server()
+                                        .url(qaUrl)
+                                        .description("QA Environment"),
+
+                                new Server()
+                                        .url(prodUrl)
+                                        .description("Production Environment")
+                        )
+                )
+
+                .externalDocs(
+                        new ExternalDocumentation()
+                                .description("Project Documentation")
+                )
+
+                .addSecurityItem(
+                        new SecurityRequirement()
+                                .addList(securitySchemeName)
+                )
+
+                .schemaRequirement(
+                        securitySchemeName,
+
+                        new SecurityScheme()
+                                .name(securitySchemeName)
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")
+                );
     }
 }
