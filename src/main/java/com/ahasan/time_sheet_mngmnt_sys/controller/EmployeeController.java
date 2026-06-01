@@ -63,10 +63,6 @@ public class EmployeeController {
         );
     }
 
-    // ==========================
-    // LEAVE MANAGEMENT
-    // ==========================
-
     @Operation(summary = "Apply Leave")
     @PostMapping("/leave/apply")
     public ResponseEntity<LeaveResponseDto> applyLeave(

@@ -18,10 +18,6 @@ public class ManagerController {
 
     private final ManagerService managerService;
 
-    // ==========================
-    // TIMESHEET MANAGEMENT
-    // ==========================
-
     @PreAuthorize("hasAnyRole('MANAGER','ADMIN')")
     @Operation(summary = "Get Pending Timesheets")
     @GetMapping("/pending")
@@ -55,10 +51,6 @@ public class ManagerController {
                 managerService.rejectTimesheet(id, dto)
         );
     }
-
-    // ==========================
-    // LEAVE MANAGEMENT
-    // ==========================
 
     @PreAuthorize("hasAnyRole('MANAGER','ADMIN')")
     @Operation(summary = "Get Pending Leave Requests")
